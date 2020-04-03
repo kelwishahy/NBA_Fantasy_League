@@ -1,12 +1,6 @@
 <?php
     //The following code is adapted from https://www.tutorialrepublic.com/php-tutorial/php-mysql-login-system.php
 
-    //Check if the user is already logged in, and redirect to myprofile if they are
-    if(isset($_COOKIE["username"]){
-        header("location: myprofile.php");
-        exit();
-    }
-
     //Include the configuration file where the db connection is created
     global $db_conn;
     $db_conn = oci_connect("ora_vicp24", "a43444447", "dbhost.students.cs.ubc.ca:1522/stu");
