@@ -1,10 +1,8 @@
 <?php
-session_start();
-
-    //The following code is borrowed from https://www.tutorialrepublic.com/php-tutorial/php-mysql-login-system.php
+    //The following code is adapted from https://www.tutorialrepublic.com/php-tutorial/php-mysql-login-system.php
 
     //Check if the user is already logged in, and redirect to myprofile if they are
-    if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+    if(isset($_COOKIE["username"]){
         header("location: myprofile.php");
         exit();
     }
@@ -41,12 +39,11 @@ session_start();
 
         //Credentials have been verified, so login & redirect to myprofile
         if ($nrows === 1) {
-            session_start();
-            $_SESSION["sid"] = session_id();
-            $_SESSION["loggedin"] = true;
-            $_SESSION["username"] = $username;
-            header("location: myprofile.php");
-            exit();
+            $cookie_name = "username";
+            $cookie_value = $username;
+            setcookie($cookie_name, $cookie_value, time() + (86400), "/");
+            header("Location: ./myprofile.php");
+            exit;
         } else {
             echo "<script> alert('Incorrect Login Credentials.'); window.location.href='index.php'; </script>";
         }

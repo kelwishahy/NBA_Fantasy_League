@@ -1,12 +1,11 @@
 <?php
-session_start();
+    if (empty($_COOKIE['username'])) {
+        header("location: index.php");
+        exit();
+    }
 
-    // if (empty($_SESSION['username'])) {
-    //     header("location: index.php");
-    //     exit();
-    // }
-
-    $username = $_SESSION['username'];
+    $username = $_COOKIE['username'];
+    
     console_log("$username");
 
 
@@ -46,7 +45,7 @@ session_start();
         <h1 style="color:white;
             font-weight:bold;
             text-align:center;
-            font-size:400%;"> <?php $username; ?>'s Profile </h1>
+            font-size:400%;"> <?php echo $username; ?>'s Profile </h1>
         </div>
 </html>
 
