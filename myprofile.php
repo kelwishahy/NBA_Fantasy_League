@@ -1,4 +1,23 @@
 <?php
+session_start();
+
+    // if (empty($_SESSION['username'])) {
+    //     header("location: index.php");
+    //     exit();
+    // }
+
+    $username = $_SESSION['username'];
+    console_log("$username");
+
+
+    //Print to console for debugging purposes
+    function console_log($data) {
+        $output = $data;
+        if (is_array($output))
+            $output = implode(',', $output);
+
+        echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
+    }
 
 ?>
 
@@ -27,7 +46,7 @@
         <h1 style="color:white;
             font-weight:bold;
             text-align:center;
-            font-size:400%;"> My Profile </h1>
+            font-size:400%;"> <?php $username; ?>'s Profile </h1>
         </div>
 </html>
 
