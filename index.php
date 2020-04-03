@@ -40,7 +40,7 @@
         if ($nrows === 1) {
             $cookie_name = "username";
             $cookie_value = $username;
-            setcookie($cookie_name, $cookie_value, time() + (86400), "/");
+            setcookie($cookie_name, $cookie_value, time() + (1800), "/");
             header("Location: ./myprofile.php");
             exit;
         } else {
