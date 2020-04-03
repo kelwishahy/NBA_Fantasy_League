@@ -1,12 +1,26 @@
 <?php
     if (empty($_COOKIE['username'])) {
         header("location: index.php");
-        exit();
+        exit;
     }
 
     $username = $_COOKIE['username'];
     
     console_log("$username");
+
+    if (isset($_POST['logout'])) {
+        logout();
+    }
+
+
+    function logout() {
+        //Invalidate the cookie
+        setcookie("username", $username, time()-84000, "/");
+    
+        //Redirect to login page
+        header("location: index.php");
+        exit;
+    }
 
 
     //Print to console for debugging purposes
@@ -46,6 +60,18 @@
             font-weight:bold;
             text-align:center;
             font-size:400%;"> <?php echo $username; ?>'s Profile </h1>
-        </div>
+        
+        <form action="" method="POST">
+            <input type="submit" name="logout" value="Logout"
+            style="background-color:#fc9803;
+            color:white; 
+            border:none;
+            top: 0;
+            right: 0;
+            position: absolute;
+            margin-top: 10px;
+            margin-right: 10px;
+            "></input>
+        </form>
+    </div>
 </html>
-
