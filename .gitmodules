@@ -1,0 +1,3 @@
+[submodule "chromelogger"]
+	path = chromelogger
+	url = https://github.com/ccampbell/chromephp.git
