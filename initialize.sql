@@ -1,3 +1,18 @@
+drop table PlayersInTeam;
+drop table LineupPlayers;
+drop table StartingLineup;
+drop table TeamOwnedBy;
+drop table Trade;
+drop table Team;
+drop table LeagueLogo;
+drop table League;
+drop table PlayerInGame;
+drop table RegularParticipant;
+drop table LeagueCommissioner;
+drop table NBAPlayer;
+drop table NBAGame;
+drop table TeamAbbreviation;
+
 create table RegularParticipant
     (UserName char(20) not null,
     UserPassword char(20) not null,
@@ -25,7 +40,7 @@ create table NBAPlayer
 grant select on NBAPlayer to public;
 
 create table NBAGame
-    (FinalScore int not null,
+    (FinalScore char(20) not null,
     DatePlayed char(20) not null,
     CompetingTeams char(20) not null,
     primary key (DatePlayed, CompetingTeams));
@@ -91,7 +106,7 @@ create table TeamOwnedBy
     (TeamID int not null,
     LeagueParticipantID char(20),
     primary key (TeamId, LeagueParticipantID),
-    foreign key (TeamID) references Team,
+    foreign key (TeamID) references Team(TeamID) ON DELETE CASCADE,
     foreign key (LeagueParticipantID) references RegularParticipant(UserName) ON DELETE CASCADE);
 
 grant select on TeamOwnedBy to public;
@@ -99,7 +114,8 @@ grant select on TeamOwnedBy to public;
 create table PlayersInTeam
     (PlayerNumber int,
     PlayerTeam char(20),
-    TeamID char(20) not null,
+    TeamID int not null,
+    foreign key (TeamID) references Team(TeamID) ON DELETE CASCADE,
     foreign key (PlayerNumber,PlayerTeam) references NBAPlayer(PlayerNumber,NBATeam) ON DELETE CASCADE,
     primary key (PlayerNumber, PlayerTeam, TeamID) );
 
@@ -107,7 +123,7 @@ grant select on PlayersInTeam to public;
 
 create table LeagueLogo
     (ManagedBy char(20),
-    Logo char(20),
+    Logo char(100),
     primary key (ManagedBy),
     foreign key (ManagedBy) references LeagueCommissioner(UserName) ON DELETE CASCADE);
 
@@ -116,7 +132,7 @@ grant select on LeagueLogo to public;
 create table StartingLineup
     (LineupID int,
     TeamID int,
-    primary key (LineupID, TeamID),
+    primary key (LineupID),
     foreign key (TeamID) references Team ON DELETE CASCADE);
 
 grant select on StartingLineup to public;
@@ -126,6 +142,7 @@ create table LineupPlayers
     PlayerTeam char(20),
     LineupID int,
     primary key (PlayerNumber, PlayerTeam, LineupID),
+    foreign key (LineupID) references StartingLineup(LineupID) ON DELETE CASCADE,
     foreign key (PlayerNumber,PlayerTeam) references NBAPlayer(PlayerNumber,NBATeam) ON DELETE CASCADE);
 
 grant select on LineupPlayers to public;
