@@ -8,7 +8,7 @@ if(empty($_POST['teamid'])) {
   exit;
 }
 				
-	$query_getTeamTrades = "SELECT t.TradeID, t.Status, t.TradeDate, t.Player1Number, t.Player2Number, p1.PlayerName as P1NAME, p2.PlayerName as P2NAME, t1.TeamName as T1NAME, t2.TeamName as T2NAME
+	$query_getTeamTrades = "SELECT t.TradeID, t.Status, t.TradeDate, t.Player1Number, t.Player2Number, p1.PlayerName as P1NAME, p2.PlayerName as P2NAME, t1.TeamName as T1NAME, t2.TeamName as T2NAME, t1.TeamID as T1ID, t2.TeamID as T2ID, p1.NBATeam as P1TEAM, p2.NBATeam as P2TEAM
 						FROM Trade t, NBAPlayer p1, NBAPlayer p2, Team t1, Team t2
 						WHERE p1.NBATeam = t.Player1Team and
 							  p1.PlayerNumber = t.Player1Number and

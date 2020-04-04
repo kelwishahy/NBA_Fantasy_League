@@ -49,7 +49,7 @@ function drawTeam(id, name, points, leaguename, logo, leagueid){
 	$('#teams').append(HTMLcode);
 	
 	var BUTTONHTMLcode = "<div class = \"team-buttons\">" +
-							"<buttons-1 id = \"" + "1_" + id + "\"></buttons-1>" +
+							"<buttons-1 id = \"" + "1_" + id + "\">VIEW PLAYERS</buttons-1>" +
 							"<buttons-2 id = \"" + "2_" + id + "\">VIEW LEAGUE</buttons-2>" +
 							"<buttons-3 id = \"" + "3_" + id + "\">MANAGE TEAM</buttons-3>" +
 							"<buttons-4 id = \"" + "4_" + id + "\">VIEW HISTORY</buttons-4>" +
@@ -58,6 +58,10 @@ function drawTeam(id, name, points, leaguename, logo, leagueid){
 	$('#buttons').append(BUTTONHTMLcode);
 	
 	//give buttons functionality
+	$('#1_' + id).click(function(e){
+		console.log("view players");
+	});
+	
 	$('#2_' + id).click(function(e){
 		console.log("view league");
 	});
@@ -89,15 +93,16 @@ function getTeamPos(teamid, leagueid, points){
 function getTrades(teamid, leagueid){
 	$.post('php/getTrades.php', {teamid: teamid}, function(json_result) {
 	  console.log(json_result);
+	  $('#trades').append("<div class = \"title\">&nbsp&nbsp&nbspNOTIFICATIONS</div>");
 	  var index = 0;
 	  json_result.STATUS.forEach(function(element){
-		 drawTrade(json_result.TRADEID[index], json_result.STATUS[index], json_result.TRADEDATE[index], json_result.PLAYER1NUMBER[index], json_result.PLAYER2NUMBER[index], json_result.P1NAME[index], json_result.P2NAME[index], json_result.T1NAME[index], json_result.T2NAME[index]); 
+		 drawTrade(json_result.TRADEID[index], json_result.STATUS[index], json_result.TRADEDATE[index], json_result.PLAYER1NUMBER[index], json_result.PLAYER2NUMBER[index], json_result.P1NAME[index], json_result.P2NAME[index], json_result.T1NAME[index], json_result.T2NAME[index], json_result.T1ID[index], json_result.T2ID[index], teamid, json_result.P1TEAM[index], json_result.P2TEAM[index]); 
 		 index++;
 	  });
    }, 'json');
 }
 
-function drawTrade(id, tradestatus, date, p1num, p2num, p1name, p2name, t1name, t2name){
+function drawTrade(id, tradestatus, date, p1num, p2num, p1name, p2name, t1name, t2name, t1id, t2id, myteamID, p1team, p2team){
 	var HTMLcode = "<div class = \"trade-box\">" + 
 						"<status>" + tradestatus + " trade</status>" +
 						"<date>" + date + "</date>" +
@@ -107,8 +112,49 @@ function drawTrade(id, tradestatus, date, p1num, p2num, p1name, p2name, t1name, 
 						"<p2name>" + p2name + "</p2name>" +
 						"<t1name>" + t1name + "</t1name>" +
 						"<t2name>" + t2name + "</t2name>" +
-						"<tline></tline>"
+						"<tline></tline>";
+		if (tradestatus.trim() == "Pending" && myteamID == t2id){
+			HTMLcode += "<accept-decline><div id = \"accept_" + id + "\"class = \"accept-icon\"><img src = \"../images/accept.png\"></div>" + 
+						"<div id = \"deny_" + id + "\"class = \"deny-icon\"><img src = \"../images/deny.png\"></div>" + 
+						"</accept-decline>";
+		} else if (tradestatus.trim() == "Pending" && myteamID == t1id){
+			HTMLcode += "<accept-decline>SENT</accept-decline>";
+		}
+		HTMLcode +=
 					"</div>";
 					
 	  $('#trades').append(HTMLcode);
+	  
+	  //give accept/deny buttons functionality
+	  if (tradestatus.trim() == "Pending" && myteamID == t2id){
+		$('#accept_' + id).click(function(e){
+			console.log("accept: " + id);
+			acceptTrade(id, p1num, p2num, p1team, p2team, t1id, t2id);
+		});
+		
+		$('#deny_' + id).click(function(e){
+			console.log("deny: " + id);
+			denyTrade(id);
+		});
+	  }
+}
+
+function acceptTrade(tradeid, p1num, p2num, p1team, p2team, t1id, t2id){
+	$.post('php/acceptTrade.php', {tradeid: tradeid, p1num: p1num, p2num: p2num, p1team: p1team, p2team: p2team, t1id: t1id, t2id: t2id}, function(json_result) {
+	  console.log(json_result);
+	  if(json_result == true){
+		$('#trades').empty();
+		getTrades();
+	  }
+   }, 'json');
+}
+
+function denyTrade(tradeid){
+	$.post('php/denyTrade.php', {tradeid: tradeid}, function(json_result) {
+	  console.log(json_result);
+	  if(json_result == true){
+		$('#trades').empty();
+		getTrades();
+	  }
+   }, 'json');
 }
