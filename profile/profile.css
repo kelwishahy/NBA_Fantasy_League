@@ -1,0 +1,255 @@
+body {
+        background-image: url('../images/background.jpg');
+        background-attachment: fixed;
+        background-size: cover;
+        font-family:Arial;
+		padding: 10px;
+    }
+
+.transparent-overlay {
+	background-color: rgba(0, 0, 0, 0.5);
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.title {
+	font-size: 40px;
+	color: white;
+	margin-bottom: 10px;
+}
+
+.split-box {
+	display: grid;
+	grid-template-columns: 41.8% 13% 0.4% 44.8%;
+}
+
+.split-box left {
+	grid-column-start: 1;
+	grid-colum-end: 1;
+	padding: 0px 10px;
+}
+
+.split-box left-right {
+	grid-column-start: 2;
+	grid-column-end: 2;
+	padding: 0px 10px;
+}
+
+.split-box line {
+	background-color: white;
+	grid-column-start: 3;
+	grid-colum-end: 3;
+}
+
+.split-box right {
+	grid-column-start: 4;
+	grid-column-end: 4;
+	padding: 0px 10px;
+}
+
+.team-box {
+	background-color: rgba(35, 35, 35, 0.6);
+	border-radius: 10px;
+	color: white;
+	display: grid;
+	grid-template-columns: 28.8% 0.4% 29.8% 20% 20%;
+	grid-template-rows: 20% 80%;
+	padding: 8px;
+	margin-bottom: 10px;
+	height: 135px;
+}
+
+.team-buttons {
+	color: white;
+	display: grid;
+	grid-template-rows: 20% 20% 20% 20% 20% ;
+	margin-bottom: 10px;
+	height: 100%;
+	font-size: 18px;
+	height: 135px;
+}
+
+.team-buttons buttons-1 {
+	grid-row-start: 1;
+}
+
+.team-buttons buttons-1:hover {
+	font-size: 20px;
+}
+
+.team-buttons buttons-2 {
+	grid-row-start: 2;
+}
+
+.team-buttons buttons-2:hover {
+	font-size: 20px;
+}
+
+.team-buttons buttons-3 {
+	grid-row-start: 3;
+}
+
+.team-buttons buttons-3:hover {
+	font-size: 20px;
+}
+
+.team-buttons buttons-4 {
+	grid-row-start: 4;
+}
+
+.team-buttons buttons-4:hover {
+	font-size: 20px;
+}
+
+.team-buttons buttons-5 {
+	grid-row-start: 5;
+}
+
+.team-buttons buttons-5:hover {
+	font-size: 20px;
+}
+
+.team-box league-name{
+	justify-content: center;
+	grid-row-start: 1;
+	grid-row-end: 1;
+	grid-column-start: 1;
+	grid-colum-end: 1;
+	display: flex;
+	margin-right: 10px;
+}
+
+.team-box league-icon {
+	margin-right: 10px;
+	grid-row-start: 2;
+	grid-row-end: 2;
+	grid-column-start: 1;
+	grid-column-end: 1;
+	max-width:230px;
+  max-height:95px;
+  width: auto;
+  height: auto;
+}
+
+.team-box team-name {
+	justify-content: center;
+	grid-row-start: 1;
+	grid-row-end: 1;
+	grid-column-start: 3;
+	grid-column-end: 3;
+	font-size: 20px;
+	display: flex;
+}
+
+.team-box tb-line {
+	background-color: white;
+	grid-row-start: 1;
+	grid-row-end: span 2;
+	grid-column-start: 2;
+	grid-column-end: 2;
+}
+
+.team-box score {
+	justify-content: center;
+	grid-row-start: 2;
+	grid-row-end: 2;
+	grid-column-start: 3;
+	grid-column-end: 3;
+	display: flex;
+	font-size: 90px;
+}
+
+.team-box  misc {
+	justify-content: center;
+	grid-row-start: 2;
+	grid-row-end: 2;
+	grid-column-start: 4;
+	grid-column-end: 4;
+	display: flex;
+	font-size: 25px;
+	margin-top: 25px;
+}
+
+.trade-box {
+	background-color: rgba(35, 35, 35, 0.6);
+	border-radius: 10px;
+	color: white;
+	display: grid;
+	grid-template-columns: 20% 25% 10% 25% 20%;
+	grid-template-rows: 20% 60% 20%;
+	padding: 8px;
+	margin-bottom: 10px;
+}
+
+.trade-box status {
+	grid-column-start: 1;
+	grid-row-start: 1;
+	font-size: 14px;
+}
+
+.trade-box date {
+	grid-column-start: 5;
+	grid-row-start: 1;
+	text-align: right;
+	font-size: 14px;
+}
+
+.trade-box p1name {
+	grid-column-start: 2;
+	justify-content: center;
+	display: flex;
+}
+
+.trade-box p2name {
+	grid-column-start: 4;
+	justify-content: center;
+	display: flex;
+}
+
+.trade-box p1num {
+	justify-content: center;
+	display: flex;
+	grid-column-start: 2;
+	grid-row-start: 2;
+	font-size: 50px;
+}
+
+.trade-box p2num {
+	justify-content: center;
+	display: flex;
+	grid-column-start: 4;
+	grid-row-start: 2;
+	font-size: 50px;
+}
+
+.trade-box t1name {
+	grid-column-start: 2;
+	grid-row-start: 3;
+	justify-content: center;
+	display: flex;
+}
+
+.trade-box t2name {
+	grid-column-start: 4;
+	grid-row-start: 3;
+	justify-content: center;
+	display: flex;
+}
+
+.trade-box tline{
+	background-color: white;
+	width: 2px;
+	grid-column-start: 3;
+	grid-row-start: 1;
+	grid-row-end: span 3;
+	margin-left: 50%;
+	margin-right: 50%;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+}
