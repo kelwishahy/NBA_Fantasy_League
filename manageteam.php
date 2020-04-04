@@ -46,15 +46,10 @@
     //2)
     //Retrieve the names, numbers, and NBA team of all players on this fantasy team
     $query_getTeamRoster = "SELECT NP.playername, NP.nbateam, NP.playernumber
-                            FROM nbaplayer NP
-                            JOIN playersinteam TP on NP.nbateam=TP.playerteam AND NP.playernumber=TP.playernumber
-                            WHERE TP.teamid='".$teamid."'
-                            ";
-    
-    $statement_getTeamRoster = oci_parse($db_conn, $query_getTeamRoster);
-    $r2 = oci_execute($statement_getTeamRoster);
-    $nrows2 = oci_fetch_all($statement_getTeamRoster, $res2);
-    ChromePhp::log($res2);
+    FROM nbaplayer NP
+    JOIN playersinteam TP on NP.nbateam=TP.playerteam AND NP.playernumber=TP.playernumber
+    WHERE TP.teamid='".$teamid."'
+    ";
 
     //BUTTON LOGIC---------------------------------------------------------------------------------------------------
 
@@ -79,15 +74,11 @@
     }
 
     //View Roster
-    if (isset($_POST['roster'])) {
-        // echo "<table>";
-        // while($row = oci_fetch_array($res2)) {
-        //     echo "<tr>
-        //     <td>" . $row['PLAYERNAME'] . "</td>
-        //     <td>" . $row['NBATEAM'] . "</td>
-        //     <td>" . $row['PLAYERNUMBER'] . "</td>
-        //     </tr>";
-        // echo "</table>";
+    if ($_POST && isset($_POST['roster'])) {
+        $statement_getTeamRoster = oci_parse($db_conn, $query_getTeamRoster);
+        $r2 = oci_execute($statement_getTeamRoster);
+        $nrows2 = oci_fetch_all($statement_getTeamRoster, $res2);
+        ChromePhp::log($res2);
     }
 ?>
 
@@ -124,23 +115,22 @@
     
     <!-- Roster table -->
     <h2 style="color:white; margin-left:20px;">Roster</h2>
-    <table style="color:white; margin-left:20px; width: 200px;">
+    <!-- <table style="color:white; margin-left:20px; width: 200px;">
     <tr>
         <th align="left">Player</th>
         <th align="left">Team</th>
         <th align="left">No.</th>
-    </tr>
-    <tr>
-        <td>Jill</td>
-        <td>Smith</td>
-        <td>50</td>
-    </tr>
-    <tr>
-        <td>Eve</td>
-        <td>Jackson</td>
-        <td>94</td>
-    </tr>
+    </tr> -->
+    <table>
+        <?php while($row = oci_fetch_array($res2)) { ?>
+            <tr>
+            <td><?php echo $row['playername']; ?></td>
+            <td><?php echo $row['nbateam']; ?></td>
+            <td><?php echo $row['playernumber']; ?></td>
+            </tr>
+        <?php } ?>
     </table>
+    
 
     <form action="" method="POST">
             <input type="submit" name="logout" value="Logout"
