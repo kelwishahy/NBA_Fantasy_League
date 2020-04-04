@@ -77,8 +77,6 @@
     if ($_POST && isset($_POST['roster'])) {
         $statement_getTeamRoster = oci_parse($db_conn, $query_getTeamRoster);
         $r2 = oci_execute($statement_getTeamRoster);
-        $nrows2 = oci_fetch_all($statement_getTeamRoster, $res2);
-        ChromePhp::log($res2);
     }
 ?>
 
@@ -115,18 +113,18 @@
     
     <!-- Roster table -->
     <h2 style="color:white; margin-left:20px;">Roster</h2>
-    <!-- <table style="color:white; margin-left:20px; width: 200px;">
+    <table style="color:white; margin-left:20px; width: 300px;">
     <tr>
         <th align="left">Player</th>
         <th align="left">Team</th>
         <th align="left">No.</th>
-    </tr> -->
-    <table>
-        <?php while($row = oci_fetch_array($res2)) { ?>
+    </tr>
+        <?php while($row = oci_fetch_array($statement_getTeamRoster)) { ?>
+            
             <tr>
-            <td><?php echo $row['playername']; ?></td>
-            <td><?php echo $row['nbateam']; ?></td>
-            <td><?php echo $row['playernumber']; ?></td>
+            <td><?php echo trim($row['PLAYERNAME']); ?></td>
+            <td><?php echo trim($row['NBATEAM']); ?></td>
+            <td><?php echo (int)$row['PLAYERNUMBER']; ?></td>
             </tr>
         <?php } ?>
     </table>
