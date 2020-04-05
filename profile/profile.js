@@ -58,7 +58,7 @@ function drawTeam(id, name, points, leaguename, logo, leagueid){
 							"<buttons-1 id = \"" + "1_" + id + "\">VIEW PLAYERS</buttons-1>" +
 							"<buttons-2 id = \"" + "2_" + id + "\">VIEW LEAGUE</buttons-2>" +
 							"<buttons-3 id = \"" + "3_" + id + "\">MANAGE TEAM</buttons-3>" +
-							"<buttons-4 id = \"" + "4_" + id + "\">VIEW HISTORY</buttons-4>" +
+							"<buttons-4 id = \"" + "4_" + id + "\">VIEW GAMES</buttons-4>" +
 							"<buttons-5 id = \"" + "5_" + id + "\"></buttons-5>" +
 						 "<\div>";
 	$('#buttons').append(BUTTONHTMLcode);
