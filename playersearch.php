@@ -35,12 +35,12 @@
     ";
 
     //2) Retrieve all free agents in this league
-    $query_getFreeAgents = "SELECT P2.playername, P2.playernumber, P2.points
+    $query_getFreeAgents = "SELECT P2.playername, P2.playernumber, P2.points, P2.nbateam
                             FROM nbaplayer P2
 
                             MINUS
 
-                            SELECT P3.playername, P3.playernumber, P3.points
+                            SELECT P3.playername, P3.playernumber, P3.points, P3.nbateam
                             FROM nbaplayer P3, Team T3, playersinteam PT3
                             WHERE T3.teamid IN(
                                 SELECT T4.teamid
@@ -51,7 +51,7 @@
                             AND P3.nbateam = PT3.playerteam
     ";
 
-     //3) Retrieve all unavailable players in all leagues
+    //3) Retrieve all unavailable players in all leagues
     $query_getUnavailablePlayers_allLeagues = "SELECT DISTINCT P1.PlayerName, P1.PlayerNumber, P1.NBATeam
     FROM League, Team, PlayersInTeam PT, NBAPlayer P1
     WHERE NOT EXISTS (SELECT * 
@@ -98,6 +98,11 @@
                                         FROM PlayersInTeam PT, NBAPlayer P2
     ";
 
+    //5) Find the average number of points scored by all players on each NBA team
+    $query_getNestedAvg = "SELECT NBATeam, AVG(Points)
+                            FROM NBAPlayer
+                            GROUP BY NBATeam";
+
     //BUTTON LOGIC---------------------------------------------------------------------------------------------------
 
     //Logout 
@@ -139,7 +144,7 @@
         ChromePhp::log(oci_execute($statement_getPlayers));
     }
 
-    //Search Free Agents
+    //Search Free Agents in this league
     if (isset($_POST['search']) && $_POST['status'] === 'freeagent' && $_POST['leagueSetting'] === 'this') {
         $status = $_POST['status'];
         ChromePhp::log("$status");
@@ -167,6 +172,12 @@
         ChromePhp::log("$statement_getPlayers");
         ChromePhp::log(oci_execute($statement_getPlayers));
         ChromePhp::log(oci_error($statement_getPlayers));
+    }
+
+    //Get average points scored by players on all NBA teams
+    if (isset($_POST['nestavg'])) {
+        $statement_getPlayers = oci_parse($db_conn, $query_getNestedAvg);
+        oci_execute($statement_getPlayers);
     }
 ?>
 
@@ -210,24 +221,28 @@
         </select>
         <input type="submit" name="search" value="Search" style="background-color:#fc9803; color:white; border:none;"></input>
     </form>
+    <form action="" method="POST" style="color:white; width:100%; margin-top:10px;">
+        <label for="findavg">Find average points scored by players on all NBA teams:</label>
+        <input type="submit" name="nestavg" value="Search" style="background-color:#fc9803; color:white; border:none;"></input>
+    </form>
 
     <!-- Returned Players -->
     <h2 style="color:white; margin-left:20px;">Search Results</h2>
     <table style="color:white; margin-left:20px; width: 600px;">
     <tr>
         <th align="left">Player</th>
-        <th align="left">Team</th>
+        <th align="left">NBA Team</th>
         <th align="left">No.</th>
         <th align="left">Points</th>
-        <th align="left">Team</th>
+        <th align="left">Fantasy Team</th>
     </tr>
         <?php while($row = oci_fetch_array($statement_getPlayers)) { ?>
             
             <tr>
             <td><?php echo trim($row['PLAYERNAME']); ?></td>
             <td><?php echo trim($row['NBATEAM']); ?></td>
-            <td><?php echo (int)$row['PLAYERNUMBER']; ?></td>
-            <td><?php echo (int)$row['POINTS']; ?></td>
+            <td><?php echo $row['PLAYERNUMBER']; ?></td>
+            <td><?php if(array_key_exists("POINTS", $row)){echo $row['POINTS'];} else if(array_key_exists("AVG(POINTS)", $row)){echo round($row['AVG(POINTS)'], 2);}?></td>
             <td><?php echo $row['TEAMNAME']; ?></td>
             </tr>
         <?php } ?>
