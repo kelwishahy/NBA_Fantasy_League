@@ -13,7 +13,7 @@
     //SQL QUERIES----------------------------------------------------------------------------------------------------
 
     //1) Get all players
-    $query_getAllPlayers = "SELECT *
+    $query_getAllPlayers = "SELECT PlayerNumber, NBATeam, Position, PlayerName
                             FROM NBAPlayer
     ";
 
@@ -91,7 +91,6 @@
         <th align="left"><?php if(isset($_POST['searchall']) && isset($_POST['player'])){echo "Player";}?></th>
         <th align="left"><?php if(isset($_POST['searchall']) && isset($_POST['nbateam'])){echo "NBA Team";}?></th>
         <th align="left"><?php if(isset($_POST['searchall']) && isset($_POST['playernumber'])){echo "No.";}?></th>
-        <th align="left"><?php if(isset($_POST['searchall']) && isset($_POST['points'])){echo "Points";}?></th>
         <th align="left"><?php if(isset($_POST['searchall']) && isset($_POST['position'])){echo "Position";}?></th>
     </tr>
         <?php while($row = oci_fetch_array($statement_getPlayers)) { ?>
@@ -100,7 +99,6 @@
             <td><?php if(isset($_POST['searchall']) && isset($_POST['player'])){echo trim($row['PLAYERNAME']);} ?></td>
             <td><?php if(isset($_POST['searchall']) && isset($_POST['nbateam'])){echo trim($row['NBATEAM']);} ?></td>
             <td><?php if(isset($_POST['searchall']) && isset($_POST['playernumber'])){echo $row['PLAYERNUMBER'];} ?></td>
-            <td><?php if(isset($_POST['searchall']) && isset($_POST['points'])){echo $row['POINTS'];}?></td>
             <td><?php if(isset($_POST['searchall']) && isset($_POST['position'])){echo $row['POSITION'];} ?></td>
             </tr>
         <?php } ?>
@@ -155,7 +153,6 @@
         <input type='checkbox' name='player' value='player'>Player<br>
         <input type='checkbox' name='nbateam' value='nbateam'>NBA Team<br>
         <input type='checkbox' name='playernumber' value='playernumber'>Jersey Number<br>
-        <input type='checkbox' name='points' value='points'>Points<br>
         <input type='checkbox' name='position' value='position'>Position<br>
         <center><input type="submit" name="searchall" value="Search All Players" style="background-color:#fc9803; color:white; border:none;"></input></center>
     </form>

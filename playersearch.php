@@ -273,7 +273,7 @@
         <th align="left">Player</th>
         <th align="left">NBA Team</th>
         <th align="left">No.</th>
-        <th align="left">Points</th>
+        <th align="left"><?php if(isset($_POST['nestavg'])){echo "Avg Points/Player";} else {echo "Points";} ?></th>
         <th align="left">Fantasy Team</th>
     </tr>
         <?php while($row = oci_fetch_array($statement_getPlayers)) { ?>
