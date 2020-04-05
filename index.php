@@ -3,7 +3,7 @@
 
     //Check if the user is already logged in, and redirect to myprofile if they are
     if(isset($_COOKIE["username"])) {
-        header("location: myprofile.php");
+        header("location: profile/profile.html");
         exit;
     }
 
@@ -41,7 +41,7 @@
             $cookie_name = "username";
             $cookie_value = $username;
             setcookie($cookie_name, $cookie_value, time() + (1800), "/");
-            header("Location: ./myprofile.php");
+            header("Location: profile/profile.html");
             exit;
         } else {
             echo "<script> alert('Incorrect Login Credentials.'); window.location.href='index.php'; </script>";
