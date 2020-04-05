@@ -4,10 +4,11 @@
 
     //Identify which team is being managed
     if (empty($_COOKIE['teamid'])) {
-        header("location: myprofile.php");
+        header("location: ./profile/profile.html");
         exit;
     }
     $teamid = $_COOKIE['teamid'];
+
     ChromePhp::log("Teamid is $teamid");
 
     //Establish database connection
@@ -69,7 +70,7 @@
         setcookie("teamid", $teamid, time()-84000, "/");
 
         //Redirect to login page
-        header("location: myprofile.php");
+        header("location: ./profile/profile.html");
         exit;
     }
 
@@ -79,11 +80,31 @@
         $r2 = oci_execute($statement_getTeamRoster);
     }
 
-    //Free Agents
-    if ($_POST && isset($_POST['freeagents'])) {
-        setcookie("leagueid", $leagueid, time() + (1800), "/");
-        header("location: freeagents.php");
-        exit;
+    //Update Team Name
+    if ($_POST && isset($_POST['updateteamname'])) {
+        if (!empty($_POST['teamname']) && !empty($_POST['abbrev'])) {
+
+            $newTeamName = $_POST['teamname'];
+            $newTeamAbbrev = $_POST['abbrev'];
+
+            $query_update1 = "UPDATE Team
+                                SET TeamName = '".$newTeamName."'
+                                WHERE TeamID = '".$teamid."'
+            ";
+
+            $query_update2 = "UPDATE TeamAbbreviation
+                                SET TeamName = '".$newTeamName."', AbbrevName = '".$newTeamAbbrev."'
+                                WHERE TeamName = '".$teamname."'
+            ";
+
+            $statement1 = oci_parse($db_conn, $query_update1);
+            $result1 = oci_execute($statement1);
+            $statement2 = oci_parse($db_conn, $query_update2);
+            $result2 = oci_execute($statement2);
+
+            header("location: manageteam.php");
+            exit;
+        }
     }
 ?>
 
@@ -117,6 +138,16 @@
                 font-weight:bold;
                 text-align:center;
                 font-size:200%;"> League #<?php echo $leagueid; ?> - <?php echo $totalpoints; ?> Points</h1>
+
+        <form action="" method="post" accept-charset="utf-8" style="
+            padding-top: 20px;
+            margin: auto;
+            text-align:center;">
+
+            <input type="text" name="teamname" placeholder="Update team name..."></input>
+            <input type="text" name="abbrev" placeholder="Update team abbreviation..."></input>
+            <input type="submit" name="updateteamname" value="Update" style="background-color:#fc9803; color:white; border:none;"></input>
+        </form>
     
     <!-- Roster table -->
     <h2 style="color:white; margin-left:20px;">Roster</h2>
@@ -169,18 +200,6 @@
             left: 0;
             position: absolute;
             margin-top: 10px;
-            margin-left: 10px;
-            "></input>
-        </form>
-    <form action="" method="POST">
-            <input type="submit" name="freeagents" value="Free Agents"
-            style="background-color:#fc9803;
-            color:white; 
-            border:none;
-            top: 0;
-            left: 0;
-            position: absolute;
-            margin-top: 30px;
             margin-left: 10px;
             "></input>
         </form>
