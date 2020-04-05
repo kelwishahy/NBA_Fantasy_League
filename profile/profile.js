@@ -1,5 +1,5 @@
 if (getCookie("username") == ""){
-	window.location.href("../index.php");
+	window.location.replace("../index.php");
 } else {
 	$('#profile_name').html(getCookie("username") + "'s Profile");
 }
@@ -7,7 +7,7 @@ if (getCookie("username") == ""){
 //logout button functionality
 $('#logout').click(function(e){
 	document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-	window.location.href("../index.php");
+	window.location.replace("../index.php");
 });
 
 //function to get a cookie stored in the browser
@@ -76,11 +76,13 @@ function drawTeam(id, name, points, leaguename, logo, leagueid){
 		console.log("manage team");
 		//document.cookie = "teamid=" + id;
 		document.cookie = 'teamid=' + id + '; path=/~zachvav; ;domain=.students.cs.ubc.ca'
-		window.location.href("../manageteam.php");
+		window.location.replace("../manageteam.php");
 	});
 	
 	$('#4_' + id).click(function(e){
 		console.log("view history");
+		document.cookie = 'teamid=' + id + '; path=/~zachvav; ;domain=.students.cs.ubc.ca'
+		window.location.replace("../games/games.html");
 	});
 	
 	//calculate and draw the position of the team in the league
