@@ -15,7 +15,7 @@
     $password = "";
 
     //The following code takes username & password input and checks the db for its existence
-   if($_SERVER["REQUEST_METHOD"] == "POST") {
+   if($_POST && isset($_POST['login'])) {
        console_log("dbconn = $db_conn");
  
         $username = strval($_POST["username"]);
@@ -47,6 +47,13 @@
             echo "<script> alert('Incorrect Login Credentials.'); window.location.href='index.php'; </script>";
         }
 
+    }
+
+    //BUTTON LOGIC----------------------------------------------------------------------------------
+    //Create account
+    if ($_POST && isset($_POST['createaccount'])) {
+        header("location: createaccount.php");
+        exit;
     }
 
     //Print to console for debugging purposes
@@ -105,7 +112,17 @@
 
             <input type="text" name="username" placeholder="Username"></input>
             <input type="password" name="password" placeholder="Password"></input>
-            <input type="submit" value="Login" style="background-color:#fc9803; color:white; border:none;"></input>
+            <input type="submit" name="login" value="Login" style="background-color:#fc9803; color:white; border:none;"></input>
         </form>
+        <center>
+        <form action="" method="POST">
+            <input type="submit" name="createaccount" value="Create New Account"
+            style="background-color:#fc9803;
+            color:white; 
+            border:none;
+            margin-top: 10px;
+            "></input>
+        </form>
+        </center>
     </div>
 </html>

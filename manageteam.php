@@ -46,10 +46,10 @@
     //2)
     //Retrieve the names, numbers, and NBA team of all players on this fantasy team
     $query_getTeamRoster = "SELECT NP.playername, NP.nbateam, NP.playernumber
-    FROM nbaplayer NP
-    JOIN playersinteam TP on NP.nbateam=TP.playerteam AND NP.playernumber=TP.playernumber
-    WHERE TP.teamid='".$teamid."'
-    ";
+                            FROM nbaplayer NP
+                            JOIN playersinteam TP on NP.nbateam=TP.playerteam AND NP.playernumber=TP.playernumber
+                            WHERE TP.teamid='".$teamid."'
+                            ";
 
     //BUTTON LOGIC---------------------------------------------------------------------------------------------------
 
@@ -77,6 +77,13 @@
     if ($_POST && isset($_POST['roster'])) {
         $statement_getTeamRoster = oci_parse($db_conn, $query_getTeamRoster);
         $r2 = oci_execute($statement_getTeamRoster);
+    }
+
+    //Free Agents
+    if ($_POST && isset($_POST['freeagents'])) {
+        setcookie("leagueid", $leagueid, time() + (1800), "/");
+        header("location: freeagents.php");
+        exit;
     }
 ?>
 
@@ -128,7 +135,6 @@
             </tr>
         <?php } ?>
     </table>
-    
 
     <form action="" method="POST">
             <input type="submit" name="logout" value="Logout"
@@ -163,6 +169,18 @@
             left: 0;
             position: absolute;
             margin-top: 10px;
+            margin-left: 10px;
+            "></input>
+        </form>
+    <form action="" method="POST">
+            <input type="submit" name="freeagents" value="Free Agents"
+            style="background-color:#fc9803;
+            color:white; 
+            border:none;
+            top: 0;
+            left: 0;
+            position: absolute;
+            margin-top: 30px;
             margin-left: 10px;
             "></input>
         </form>
