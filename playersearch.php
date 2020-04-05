@@ -2,6 +2,13 @@
     //Logger for debugging
     include "./chromelogger/ChromePhp.php";
 
+    //Identify the current team
+    if (empty($_COOKIE['teamid'])) {
+        header("location: ./profile/profile.html");
+        exit;
+    }
+    $teamid = $_COOKIE['teamid'];
+
     //Establish database connection
     $db_conn;
     $db_conn = oci_connect("ora_vicp24", "a43444447", "dbhost.students.cs.ubc.ca:1522/stu");
@@ -28,6 +35,16 @@
 
         //Redirect to login page
         header("location: ./profile/profile.html");
+        exit;
+    }
+
+    //Back
+    if (isset($_POST['back'])) {
+        //Invalidate the cookie
+        setcookie("teamid", $teamid, time()+5, "/");
+
+        //Redirect to manage team
+        header("location: manageteam.php");
         exit;
     }
 ?>
@@ -58,6 +75,13 @@
                 font-weight:bold;
                 text-align:center;
                 font-size:350%;">Player Search</h1>
+    
+    <center>
+    <form action="" method="POST" style="color:white; width:100%;">
+
+        <input type="submit" name="search" value="Submit" style="background-color:#fc9803; color:white; border:none;"></input>
+    </form>
+    </center>
 
 
     <form action="" method="POST">
@@ -82,6 +106,18 @@
             position: absolute;
             margin-top: 30px;
             margin-right: 10px;
+            "></input>
+    </form>
+    <form action="" method="POST">
+            <input type="submit" name="back" value="Back"
+            style="background-color:#fc9803;
+            color:white; 
+            border:none;
+            top: 0;
+            left: 0;
+            position: absolute;
+            margin-top: 10px;
+            margin-left: 10px;
             "></input>
     </form>
 </html>

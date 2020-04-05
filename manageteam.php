@@ -106,6 +106,21 @@
             exit;
         }
     }
+
+    //Search Players
+    if ($_POST && isset($_POST['search'])) {
+        setcookie("teamid", $teamid, time()+5, "/");
+        header("location: playersearch.php");
+        exit;
+    }
+
+    //Trades
+    if ($_POST && isset($_POST['trades'])) {
+        setcookie("teamid", $teamid, time()+600, "/");
+        setcookie("leagueid", $leagueid, time()+600, "/");
+        header("location: playersearch.php");
+        exit;
+    }
 ?>
 
 <!DOCTYPE html>
@@ -202,6 +217,30 @@
             margin-top: 10px;
             margin-left: 10px;
             "></input>
-        </form>
+    </form>
+    <form action="" method="POST">
+            <input type="submit" name="search" value="Search Players"
+            style="background-color:#fc9803;
+            color:white; 
+            border:none;
+            top: 0;
+            left: 0;
+            position: absolute;
+            margin-top: 30px;
+            margin-left: 10px;
+            "></input>
+    </form>
+    <form action="" method="POST">
+            <input type="submit" name="trades" value="Trades"
+            style="background-color:#fc9803;
+            color:white; 
+            border:none;
+            top: 0;
+            left: 0;
+            position: absolute;
+            margin-top: 30px;
+            margin-left: 10px;
+            "></input>
+    </form>
     </div>
 </html>
