@@ -75,13 +75,13 @@ function drawTeam(id, name, points, leaguename, logo, leagueid){
 	$('#3_' + id).click(function(e){
 		console.log("manage team");
 		//document.cookie = "teamid=" + id;
-		document.cookie = 'teamid=' + id + '; path=/~zachvav; ;domain=.students.cs.ubc.ca'
+		document.cookie = 'teamid=' + id + '; path=/; ;domain=.students.cs.ubc.ca'
 		window.location.replace("../manageteam.php");
 	});
 	
 	$('#4_' + id).click(function(e){
 		console.log("view history");
-		document.cookie = 'teamid=' + id + '; path=/~zachvav; ;domain=.students.cs.ubc.ca'
+		document.cookie = 'teamid=' + id + '; path=/; ;domain=.students.cs.ubc.ca'
 		window.location.replace("../games/games.html");
 	});
 	
