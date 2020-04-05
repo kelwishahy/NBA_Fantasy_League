@@ -102,6 +102,14 @@
     $query_getNestedAvg = "SELECT NBATeam, AVG(Points)
                             FROM NBAPlayer
                             GROUP BY NBATeam";
+    
+    //6) Find the highest scoring player(s)
+    $query_getHighestScorer = "SELECT PlayerName, PlayerNumber, NBATeam, Points
+                                FROM NBAPlayer
+                                WHERE Points IN(
+                                    SELECT MAX(Points)
+                                    FROM NBAPlayer)
+    ";
 
     //BUTTON LOGIC---------------------------------------------------------------------------------------------------
 
@@ -179,6 +187,12 @@
         $statement_getPlayers = oci_parse($db_conn, $query_getNestedAvg);
         oci_execute($statement_getPlayers);
     }
+
+    //Find the highest scoring player
+    if (isset($_POST['highscore'])) {
+        $statement_getPlayers = oci_parse($db_conn, $query_getHighestScorer);
+        oci_execute($statement_getPlayers);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -224,6 +238,10 @@
     <form action="" method="POST" style="color:white; width:100%; margin-top:10px;">
         <label for="findavg">Find average points scored by players on all NBA teams:</label>
         <input type="submit" name="nestavg" value="Search" style="background-color:#fc9803; color:white; border:none;"></input>
+    </form>
+    <form action="" method="POST" style="color:white; width:100%; margin-top:10px;">
+        <label for="findHighestScorer">Find the highest scoring player:</label>
+        <input type="submit" name="highscore" value="Search" style="background-color:#fc9803; color:white; border:none;"></input>
     </form>
 
     <!-- Returned Players -->
