@@ -43,7 +43,7 @@
     FROM nbaplayer NP
     JOIN playersinteam TP on NP.nbateam=TP.playerteam AND NP.playernumber=TP.playernumber
     WHERE TP.teamid<>'".$teamid."'
-    ORDER BY TP.teamid
+    ORDER BY TP.teamid, NP.playername
     ";
 
     $statement2 = oci_parse($db_conn, $query2);
@@ -53,21 +53,21 @@
     FROM nbaplayer NP
     JOIN playersinteam TP on NP.nbateam=TP.playerteam AND NP.playernumber=TP.playernumber
     WHERE TP.teamid<>'".$teamid."'
-    ORDER BY TP.teamid
+    ORDER BY TP.teamid, NP.playername
     ";
 
     $query_number = "SELECT NP.playernumber
     FROM nbaplayer NP
     JOIN playersinteam TP on NP.nbateam=TP.playerteam AND NP.playernumber=TP.playernumber
     WHERE TP.teamid<>'".$teamid."'
-    ORDER BY TP.teamid
+    ORDER BY TP.teamid, NP.playername
     ";
 
     $query_team = "SELECT NP.nbateam
     FROM nbaplayer NP
     JOIN playersinteam TP on NP.nbateam=TP.playerteam AND NP.playernumber=TP.playernumber
     WHERE TP.teamid<>'".$teamid."'
-    ORDER BY TP.teamid
+    ORDER BY TP.teamid, NP.playername
     ";
     
     if ($_POST && isset($_POST['points'])) {
@@ -115,6 +115,15 @@
         $sql="INSERT INTO Trade VALUES('${next_trade_id}', '${teamid_copy}', '${p2teamid}', '${p1num}', '${p2num}', '".$p1team."', '".$p2team."', '".$status."', '".$today."')";
         $statement_newTrade= oci_parse($db_conn, $sql);
         $r3 = oci_execute($statement_newTrade);    
+    }
+
+    if (isset($_POST['profile'])) {
+        //Invalidate the cookie
+        setcookie("teamid", $teamid, time()-84000, "/");
+
+        //Redirect to login page
+        header("location: ./profile/profile.html");
+        exit;
     }
 
 
@@ -188,6 +197,19 @@
             right: 0;
             position: absolute;
             margin-top: 10px;
+            margin-right: 10px;
+            "></input>
+        </form>
+
+        <form action="" method="POST">
+            <input type="submit" name="profile" value="My Profile"
+            style="background-color:#fc9803;
+            color:white; 
+            border:none;
+            top: 0;
+            right: 0;
+            position: absolute;
+            margin-top: 30px;
             margin-right: 10px;
             "></input>
         </form>
