@@ -8,6 +8,15 @@
         exit;
     }
     $teamid = $_COOKIE['teamid'];
+    ChromePhp::log("Team id is $teamid");
+
+    //Identify the current league
+    if (empty($_COOKIE['leagueid'])) {
+        header("location: ./profile/profile.html");
+        exit;
+    }
+    $leagueid = $_COOKIE['leagueid'];
+    ChromePhp::log("League id is $leagueid");
 
     //Establish database connection
     $db_conn;
@@ -15,6 +24,79 @@
     ChromePhp::log("dbconn = $db_conn");
 
     //SQL QUERIES----------------------------------------------------------------------------------------------------
+
+    //1) Retrieve all unavailable players in this league
+    $query_getUnavailablePlayers = "SELECT P.playername, P.playernumber, P.points, P.nbateam, T.teamname
+                                    FROM nbaplayer P, team T, playersinteam PT
+                                    WHERE P.nbateam = PT.playerteam
+                                    AND P.playernumber = PT.playernumber
+                                    AND T.teamid = PT.teamid
+                                    AND T.league = '".$leagueid."'
+    ";
+
+    //2) Retrieve all free agents in this league
+    $query_getFreeAgents = "SELECT P2.playername, P2.playernumber, P2.points
+                            FROM nbaplayer P2
+
+                            MINUS
+
+                            SELECT P3.playername, P3.playernumber, P3.points
+                            FROM nbaplayer P3, Team T3, playersinteam PT3
+                            WHERE T3.teamid IN(
+                                SELECT T4.teamid
+                                FROM team T4
+                                WHERE T4.league = '".$leagueid."') 
+                            AND PT3.teamid = T3.teamid
+                            AND P3.playernumber = PT3.playernumber
+                            AND P3.nbateam = PT3.playerteam
+    ";
+
+     //3) Retrieve all unavailable players in all leagues
+    $query_getUnavailablePlayers_allLeagues = "SELECT DISTINCT P1.PlayerName, P1.PlayerNumber, P1.NBATeam
+    FROM League, Team, PlayersInTeam PT, NBAPlayer P1
+    WHERE NOT EXISTS (SELECT * 
+              FROM League
+              WHERE LeagueID 
+              NOT IN (SELECT League
+                  FROM Team))
+    AND Team.League = League.LeagueID
+    AND PT.TeamID = Team.TeamID
+
+    MINUS
+
+    SELECT DISTINCT P.PlayerName, P.PlayerNumber, P.NBATeam
+    FROM NBAPlayer P, League L1, League L2
+    WHERE EXISTS(
+        SELECT *
+        FROM PlayersInTeam PT, Team T
+        WHERE P.PlayerNumber = PT.PlayerNumber
+        AND P.NBATeam = PT.PlayerTeam
+        AND T.TeamID = PT.TeamID
+        AND T.League = L1.LeagueID)
+    AND NOT EXISTS(
+        SELECT *
+        FROM PlayersInTeam PT2, Team T2
+        WHERE P.PlayerNumber = PT2.PlayerNumber
+        AND P.NBATeam = PT2.PlayerTeam
+        AND T2.TeamID = PT2.TeamID
+        AND T2.League = L2.LeagueID)
+    OR EXISTS(
+        SELECT P3.PlayerName, P3.PlayerNumber, P3.NBATeam
+        FROM NBAPlayer P3
+        WHERE P3.NBATeam = P.NBATeam
+        AND P3.PlayerNumber = P.PlayerNumber MINUS SELECT P4.PlayerName, PT4.PlayerNumber, PT4.PlayerTeam
+        FROM PlayersInTeam PT4, NBAPlayer P4)
+    ";
+
+    //4) Retrieve players who are free agents in all leagues
+    $query_getFreeAgents_allLeagues = "SELECT P.PlayerName, P.PlayerNumber, P.NBATeam
+                                        FROM NBAPlayer P
+
+                                        MINUS
+
+                                        SELECT P2.PlayerName, PT.PlayerNumber, PT.PlayerTeam
+                                        FROM PlayersInTeam PT, NBAPlayer P2
+    ";
 
     //BUTTON LOGIC---------------------------------------------------------------------------------------------------
 
@@ -47,6 +129,45 @@
         header("location: manageteam.php");
         exit;
     }
+
+    //Search unavailable players in this league
+    if (isset($_POST['search']) && $_POST['status'] === 'unavailable' && $_POST['leagueSetting'] === 'this') {
+        $status = $_POST['status'];
+        ChromePhp::log("$status");
+        $statement_getPlayers = oci_parse($db_conn, $query_getUnavailablePlayers);
+        ChromePhp::log("$statement_getPlayers");
+        ChromePhp::log(oci_execute($statement_getPlayers));
+    }
+
+    //Search Free Agents
+    if (isset($_POST['search']) && $_POST['status'] === 'freeagent' && $_POST['leagueSetting'] === 'this') {
+        $status = $_POST['status'];
+        ChromePhp::log("$status");
+        $statement_getPlayers = oci_parse($db_conn, $query_getFreeAgents);
+        ChromePhp::log("$statement_getPlayers");
+        ChromePhp::log(oci_execute($statement_getPlayers));
+        ChromePhp::log(oci_error($statement_getPlayers));
+    }
+
+    //Search unavailable players in all leagues
+    if (isset($_POST['search']) && $_POST['status'] === 'unavailable' && $_POST['leagueSetting'] === 'all') {
+        $status = $_POST['status'];
+        ChromePhp::log("$status");
+        $statement_getPlayers = oci_parse($db_conn, $query_getUnavailablePlayers_allLeagues);
+        ChromePhp::log("$statement_getPlayers");
+        ChromePhp::log(oci_execute($statement_getPlayers));
+        ChromePhp::log(oci_error($statement_getPlayers));
+    }
+
+    //Search free agents in all leagues
+    if (isset($_POST['search']) && $_POST['status'] === 'freeagent' && $_POST['leagueSetting'] === 'all') {
+        $status = $_POST['status'];
+        ChromePhp::log("$status");
+        $statement_getPlayers = oci_parse($db_conn, $query_getFreeAgents_allLeagues);
+        ChromePhp::log("$statement_getPlayers");
+        ChromePhp::log(oci_execute($statement_getPlayers));
+        ChromePhp::log(oci_error($statement_getPlayers));
+    }
 ?>
 
 <!DOCTYPE html>
@@ -78,10 +199,41 @@
     
     <center>
     <form action="" method="POST" style="color:white; width:100%;">
-
-        <input type="submit" name="search" value="Submit" style="background-color:#fc9803; color:white; border:none;"></input>
+        <select name="status">
+            <option value="freeagent">Free Agent</option>
+            <option value="unavailable">Unavailable</option>
+        </select>
+        <label for="in">in</label>
+        <select name="leagueSetting">
+            <option value="this">This League</option>
+            <option value="all">All Leagues</option>
+        </select>
+        <input type="submit" name="search" value="Search" style="background-color:#fc9803; color:white; border:none;"></input>
     </form>
+
+    <!-- Returned Players -->
+    <h2 style="color:white; margin-left:20px;">Search Results</h2>
+    <table style="color:white; margin-left:20px; width: 600px;">
+    <tr>
+        <th align="left">Player</th>
+        <th align="left">Team</th>
+        <th align="left">No.</th>
+        <th align="left">Points</th>
+        <th align="left">Team</th>
+    </tr>
+        <?php while($row = oci_fetch_array($statement_getPlayers)) { ?>
+            
+            <tr>
+            <td><?php echo trim($row['PLAYERNAME']); ?></td>
+            <td><?php echo trim($row['NBATEAM']); ?></td>
+            <td><?php echo (int)$row['PLAYERNUMBER']; ?></td>
+            <td><?php echo (int)$row['POINTS']; ?></td>
+            <td><?php echo $row['TEAMNAME']; ?></td>
+            </tr>
+        <?php } ?>
+    </table>
     </center>
+    
 
 
     <form action="" method="POST">

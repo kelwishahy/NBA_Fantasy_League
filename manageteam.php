@@ -109,7 +109,8 @@
 
     //Search Players
     if ($_POST && isset($_POST['search'])) {
-        setcookie("teamid", $teamid, time()+5, "/");
+        setcookie("teamid", $teamid, time()+600, "/");
+        setcookie("leagueid", $leagueid, time()+600, "/");
         header("location: playersearch.php");
         exit;
     }
@@ -118,7 +119,7 @@
     if ($_POST && isset($_POST['trades'])) {
         setcookie("teamid", $teamid, time()+600, "/");
         setcookie("leagueid", $leagueid, time()+600, "/");
-        header("location: playersearch.php");
+        header("location: trades.php");
         exit;
     }
 ?>
@@ -238,7 +239,7 @@
             top: 0;
             left: 0;
             position: absolute;
-            margin-top: 30px;
+            margin-top: 50px;
             margin-left: 10px;
             "></input>
     </form>
