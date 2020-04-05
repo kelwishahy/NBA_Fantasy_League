@@ -1,5 +1,5 @@
 <?php
-// returns the trades for a team
+// denies a trade
 
 // connect to DB (made a seperate file for convinience)
 require_once('../../db_connect.php');

@@ -15,6 +15,14 @@ body {
 	height: 100%;
 }
 
+.top-button {
+	float: right;
+	background-color: orange;
+	color: white;
+	padding: 3px;
+	font-size: 12px;
+}
+
 .title {
 	font-size: 40px;
 	color: white;

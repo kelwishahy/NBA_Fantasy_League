@@ -1,8 +1,14 @@
 if (getCookie("username") == ""){
-	window.location.replace("https://www.students.cs.ubc.ca/~zachvav/NBA_Fantasy_League/index.php");
+	window.location.href("../index.php");
 } else {
 	$('#profile_name').html(getCookie("username") + "'s Profile");
 }
+
+//logout button functionality
+$('#logout').click(function(e){
+	document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+	window.location.href("../index.php");
+});
 
 //function to get a cookie stored in the browser
 //returns cookie as a string
@@ -68,6 +74,9 @@ function drawTeam(id, name, points, leaguename, logo, leagueid){
 	
 	$('#3_' + id).click(function(e){
 		console.log("manage team");
+		//document.cookie = "teamid=" + id;
+		document.cookie = 'teamid=' + id + '; path=/~zachvav; ;domain=.students.cs.ubc.ca'
+		window.location.href("../manageteam.php");
 	});
 	
 	$('#4_' + id).click(function(e){
@@ -156,5 +165,11 @@ function denyTrade(tradeid){
 		$('#trades').empty();
 		getTrades();
 	  }
+   }, 'json');
+}
+
+function getMaxTradeID(tradeid){
+	$.post('php/getMaxTradeID.php', {}, function(json_result) {
+	  console.log(json_result);
    }, 'json');
 }
