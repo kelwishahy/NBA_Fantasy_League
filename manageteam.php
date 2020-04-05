@@ -1,6 +1,6 @@
 <?php
     //Logger for debugging
-    include "./chromelogger/ChromePhp.php";
+   // include "./chromelogger/ChromePhp.php";
 
     //Identify which team is being managed
     if (empty($_COOKIE['teamid'])) {
@@ -9,12 +9,12 @@
     }
     $teamid = $_COOKIE['teamid'];
 
-    ChromePhp::log("Teamid is $teamid");
+    //ChromePhp::log("Teamid is $teamid");
 
     //Establish database connection
     $db_conn;
     $db_conn = oci_connect("ora_vicp24", "a43444447", "dbhost.students.cs.ubc.ca:1522/stu");
-    ChromePhp::log("dbconn = $db_conn");
+    //ChromePhp::log("dbconn = $db_conn");
 
     //SQL QUERIES-----------------------------------------------------------------------------------------------
 
@@ -33,16 +33,16 @@
     $statement_getTeamInfo = oci_parse($db_conn, $query_getTeamInfo);
     $r1 = oci_execute($statement_getTeamInfo);
     $nrows1 = oci_fetch_all($statement_getTeamInfo, $res1);
-    ChromePhp::log($res1);
+    //ChromePhp::log($res1);
 
     $leagueid = (int)$res1['LEAGUE'][0];
-    ChromePhp::log("League ID is $leagueid");
+   // ChromePhp::log("League ID is $leagueid");
     $teamname = trim($res1['TEAMNAME'][0]);
-    ChromePhp::log("Team name is $teamname");
+   // ChromePhp::log("Team name is $teamname");
     $totalpoints = (int)$res1['TOTALPOINTS'][0];
-    ChromePhp::log("Total points: $totalpoints");
+   // ChromePhp::log("Total points: $totalpoints");
     $abbrevname = trim($res1['ABBREVNAME'][0]);
-    ChromePhp::log("Abbreviated name is $abbrevname");
+ //   ChromePhp::log("Abbreviated name is $abbrevname");
 
     //2)
     //Retrieve the names, numbers, and NBA team of all players on this fantasy team
