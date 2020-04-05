@@ -10,6 +10,11 @@ $('#logout').click(function(e){
 	window.location.replace("../index.php");
 });
 
+//profile button functionality
+$('#profile').click(function(e){
+	window.location.replace("../profile/profile.html");
+});
+
 getAllGames();
 getMyPlayers(getCookie("teamid"));
 
