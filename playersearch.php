@@ -193,6 +193,16 @@
         $statement_getPlayers = oci_parse($db_conn, $query_getHighestScorer);
         oci_execute($statement_getPlayers);
     }
+
+    //View all players
+    if (isset($_POST['viewallplayers'])) {
+        //Set cookie
+        setcookie("teamid", $teamid, time()+5, "/");
+
+        //Redirect to manage team
+        header("location: viewallplayers.php");
+        exit;
+    }
 ?>
 
 <!DOCTYPE html>
@@ -244,6 +254,18 @@
         <input type="submit" name="highscore" value="Search" style="background-color:#fc9803; color:white; border:none;"></input>
     </form>
 
+    <form action="" method="POST" style="color:white; width:100%; margin-top:10px;">
+        <div><label for="findSpecificPlayer">Find a specific player:</label></div>
+
+        <label for="number">Jersey Number:</label>
+        <input type="number" id="number" name="number"></input>
+
+        <label for="team">Team:</label>
+        <input type="text" id="team" name="team"></input>
+        
+        <input type="submit" name="findplayer" value="Search" style="background-color:#fc9803; color:white; border:none;"></input>
+    </form>
+
     <!-- Returned Players -->
     <h2 style="color:white; margin-left:20px;">Search Results</h2>
     <table style="color:white; margin-left:20px; width: 600px;">
@@ -258,7 +280,7 @@
             
             <tr>
             <td><?php echo trim($row['PLAYERNAME']); ?></td>
-            <td><?php echo trim($row['NBATEAM']); ?></td>
+            <td><?php echo trim($row['NBATEAM']);?></td>
             <td><?php echo $row['PLAYERNUMBER']; ?></td>
             <td><?php if(array_key_exists("POINTS", $row)){echo $row['POINTS'];} else if(array_key_exists("AVG(POINTS)", $row)){echo round($row['AVG(POINTS)'], 2);}?></td>
             <td><?php echo $row['TEAMNAME']; ?></td>
@@ -302,6 +324,18 @@
             left: 0;
             position: absolute;
             margin-top: 10px;
+            margin-left: 10px;
+            "></input>
+    </form>
+    <form action="" method="POST">
+            <input type="submit" name="viewallplayers" value="View All Players"
+            style="background-color:#fc9803;
+            color:white; 
+            border:none;
+            top: 0;
+            left: 0;
+            position: absolute;
+            margin-top: 30px;
             margin-left: 10px;
             "></input>
     </form>
