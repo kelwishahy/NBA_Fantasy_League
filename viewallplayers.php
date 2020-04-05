@@ -13,7 +13,7 @@
     //SQL QUERIES----------------------------------------------------------------------------------------------------
 
     //1) Get all players
-    $query_getAllPlayers = "SELECT *
+    $query_getAllPlayers = "SELECT PlayerName
                             FROM NBAPlayer
     ";
 
