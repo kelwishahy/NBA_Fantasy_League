@@ -417,6 +417,9 @@ values(27, 'Jazz', 1005);
 insert into LineupPlayers
 values(2, 'Clippers', 1009);
 
+insert into RegularParticipant
+values('kelwishahy','password','2020-02-27');
+
 INSERT INTO Team VALUES('GOATGANG', 0, 1000, 4);
 INSERT INTO TeamOwnedBy VALUES (1000, 'kelwishahy');
 INSERT INTO TeamAbbreviation VALUES('GOATGANG', 'GG');
