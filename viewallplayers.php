@@ -1,4 +1,7 @@
 <?php
+    //Logger for debugging
+    include "./chromelogger/ChromePhp.php";
+
     //Identify the current team
     if (empty($_COOKIE['teamid'])) {
         header("location: ./profile/profile.html");
@@ -9,13 +12,6 @@
     //Establish database connection
     $db_conn;
     $db_conn = oci_connect("ora_vicp24", "a43444447", "dbhost.students.cs.ubc.ca:1522/stu");
-
-    //SQL QUERIES----------------------------------------------------------------------------------------------------
-
-    //1) Get all players
-    $query_getAllPlayers = "SELECT PlayerNumber, NBATeam, Position, PlayerName
-                            FROM NBAPlayer
-    ";
 
     //BUTTON LOGIC---------------------------------------------------------------------------------------------------
 
@@ -51,6 +47,34 @@
 
     //Get all players
     if (isset($_POST['searchall'])) {
+        $projectionCriteria = "";
+
+        if (isset($_POST['player'])) {
+            $projectionCriteria .= "PlayerName,";
+        }
+
+        if (isset($_POST['nbateam'])) {
+            $projectionCriteria .= "NBATeam,";
+        }
+
+        if (isset($_POST['playernumber'])) {
+            $projectionCriteria .= "PlayerNumber,";
+        }
+
+        if (isset($_POST['position'])) {
+            $projectionCriteria .= "Position,";
+        }
+
+        if (isset($_POST['points'])) {
+            $projectionCriteria .= "Points,";
+        }
+
+        $projectionCriteria = rtrim($projectionCriteria, ",");
+
+        //PROJECTION QUERY
+        $query_getAllPlayers = "SELECT " .$projectionCriteria. " FROM NBAPlayer";
+        ChromePhp::log("Query = $query_getAllPlayers");
+
         $statement_getPlayers = oci_parse($db_conn, $query_getAllPlayers);
         oci_execute($statement_getPlayers);
     }
@@ -92,6 +116,7 @@
         <th align="left"><?php if(isset($_POST['searchall']) && isset($_POST['nbateam'])){echo "NBA Team";}?></th>
         <th align="left"><?php if(isset($_POST['searchall']) && isset($_POST['playernumber'])){echo "No.";}?></th>
         <th align="left"><?php if(isset($_POST['searchall']) && isset($_POST['position'])){echo "Position";}?></th>
+        <th align="left"><?php if(isset($_POST['searchall']) && isset($_POST['points'])){echo "Points";}?></th>
     </tr>
         <?php while($row = oci_fetch_array($statement_getPlayers)) { ?>
             
@@ -100,6 +125,7 @@
             <td><?php if(isset($_POST['searchall']) && isset($_POST['nbateam'])){echo trim($row['NBATEAM']);} ?></td>
             <td><?php if(isset($_POST['searchall']) && isset($_POST['playernumber'])){echo $row['PLAYERNUMBER'];} ?></td>
             <td><?php if(isset($_POST['searchall']) && isset($_POST['position'])){echo $row['POSITION'];} ?></td>
+            <td><?php if(isset($_POST['searchall']) && isset($_POST['points'])){echo $row['POINTS'];} ?></td>
             </tr>
         <?php } ?>
     </table>
@@ -154,6 +180,7 @@
         <input type='checkbox' name='nbateam' value='nbateam'>NBA Team<br>
         <input type='checkbox' name='playernumber' value='playernumber'>Jersey Number<br>
         <input type='checkbox' name='position' value='position'>Position<br>
+        <input type='checkbox' name='points' value='points'>Points<br>
         <center><input type="submit" name="searchall" value="Search All Players" style="background-color:#fc9803; color:white; border:none;"></input></center>
     </form>
 </html>

@@ -245,23 +245,33 @@
         </select>
         <input type="submit" name="search" value="Search" style="background-color:#fc9803; color:white; border:none;"></input>
     </form>
-    <form action="" method="POST" style="color:white; width:100%; margin-top:10px;">
+    <form action="" method="POST" style="color:white; width:100%; margin-top:20px;">
         <label for="findavg">Find average points scored by players on all NBA teams:</label>
         <input type="submit" name="nestavg" value="Search" style="background-color:#fc9803; color:white; border:none;"></input>
     </form>
-    <form action="" method="POST" style="color:white; width:100%; margin-top:10px;">
+    <form action="" method="POST" style="color:white; width:100%; margin-top:20px;">
         <label for="findHighestScorer">Find the highest scoring player:</label>
         <input type="submit" name="highscore" value="Search" style="background-color:#fc9803; color:white; border:none;"></input>
     </form>
 
-    <form action="" method="POST" style="color:white; width:100%; margin-top:10px;">
+    <form action="" method="POST" style="color:white; width:100%; margin-top:20px;">
         <div><label for="findSpecificPlayer">Find a specific player:</label></div>
 
-        <label for="number">Jersey Number:</label>
-        <input type="number" id="number" name="number"></input>
+        <input type="number" id="number" name="number" placeholder="Jersey Number..."></input>
 
-        <label for="team">Team:</label>
-        <input type="text" id="team" name="team"></input>
+        <input type="text" id="team" name="team" placeholder="Team..."></input>
+
+        <select name="position">
+            <option value="pointguard">Point Guard</option>
+            <option value="smallforward">Small Forward</option>
+            <option value="center">Center</option>
+            <option value="powerforward">Power Forward</option>
+            <option value="shootingguard">Shooting Guard</option>
+        </select>
+
+        <input type="number" id="points" name="points" placeholder="Points..."></input>
+
+        <input type="text" id="playername" name="playername" placeholder="Name..."></input>
         
         <input type="submit" name="findplayer" value="Search" style="background-color:#fc9803; color:white; border:none;"></input>
     </form>
