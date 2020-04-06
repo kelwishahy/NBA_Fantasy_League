@@ -1,0 +1,88 @@
+body {
+        background-image: url('../images/background.jpg');
+        background-attachment: fixed;
+        background-size: cover;
+        font-family:Arial;
+		padding: 10px;
+    }
+
+.transparent-overlay {
+	background-color: rgba(0, 0, 0, 0.5);
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.top-button {
+	float: right;
+	background-color: orange;
+	color: white;
+	padding: 3px;
+	font-size: 12px;
+}
+
+.top-button:hover {
+	cursor: pointer;
+}
+
+.main-panel {
+	display: grid;
+	justify-content: center;
+	margin-top: 50px;
+	grid-template-columns: 20% 60% 20%;
+}
+
+.league-box {
+	background-color: rgba(35, 35, 35, 0.6);
+	grid-column-start: 2;
+	border-radius: 10px;
+	color: white;
+	display: grid;
+	grid-template-columns: 20% 59% 1% 20%;
+	grid-template-rows: 30% 70%;
+	padding: 8px;
+	margin-bottom: 10px;
+}
+
+.league-box logo {
+	margin-right: 10px;
+	grid-row-start: 1;
+	grid-row-end: span 2;
+	grid-column-start: 1;
+	grid-column-end: 1;
+	width: auto;
+	height: auto;
+}
+
+.league-box name {
+	font-size: 40px;
+	grid-column-start: 2;
+	grid-row-start: 1;
+}
+
+.league-box team-count {
+	font-size: 40px;
+	grid-column-start: 2;
+	grid-row-start: 2;
+	font-size: 20px;
+}
+
+.league-box join {
+	font-size: 40px;
+	background-color: orange;
+	grid-row-start: 2;
+	grid-column-start: 4;
+	justify-content: center;
+	display: flex;
+	height: 50px;
+	width: 150px;
+	border-radius: 10px;
+}
+
+.league-box join:hover {
+	cursor: pointer;
+	background-color: rgba(255, 170, 50, 1);
+	font-size: 42px;
+}

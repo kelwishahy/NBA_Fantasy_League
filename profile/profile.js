@@ -28,8 +28,6 @@ function getCookie(cname) {
   return "";
 }
 
-getTeams();
-
 // Get all of the profile information and display it on the page
 function getTeams() {
     $.post('php/getTeams.php', {username: getCookie("username")}, function(json_result) {
@@ -39,6 +37,13 @@ function getTeams() {
 		  drawTeam(json_result.TEAMID[index], json_result.TEAMNAME[index], json_result.TOTALPOINTS[index], json_result.LEAGUENAME[index], json_result.LOGO[index], json_result.LEAGUEID[index]);
 		  index ++;
 	  })
+	  $('#teams').append("<div id = \"" + "join-league" + "\" class = \"join-league\">JOIN NEW LEAGUE</div>");
+	  
+	  //give functionality to join new league button
+	  $('#join-league').click(function(e){
+		  window.location.replace("../league/league.html");
+	  });
+	  
    }, 'json');
 }
 
@@ -59,7 +64,7 @@ function drawTeam(id, name, points, leaguename, logo, leagueid){
 							"<buttons-2 id = \"" + "2_" + id + "\">VIEW LEAGUE</buttons-2>" +
 							"<buttons-3 id = \"" + "3_" + id + "\">MANAGE TEAM</buttons-3>" +
 							"<buttons-4 id = \"" + "4_" + id + "\">VIEW GAMES</buttons-4>" +
-							"<buttons-5 id = \"" + "5_" + id + "\"></buttons-5>" +
+							"<buttons-5 id = \"" + "5_" + id + "\">DELETE TEAM</buttons-5>" +
 						 "<\div>";
 	$('#buttons').append(BUTTONHTMLcode);
 	
@@ -85,6 +90,10 @@ function drawTeam(id, name, points, leaguename, logo, leagueid){
 		window.location.replace("../games/games.html");
 	});
 	
+	$('#4_' + id).click(function(e){
+		console.log("delete team");
+	});
+	
 	//calculate and draw the position of the team in the league
 	getTeamPos(id, leagueid, points);
 	
@@ -94,6 +103,7 @@ function drawTeam(id, name, points, leaguename, logo, leagueid){
 
 // get the position of a team in a league
 function getTeamPos(teamid, leagueid, points){
+	console.log(teamid + " " + leagueid + " " + points);
 	$.post('php/getTeamPos.php', {teamid: teamid, leagueid: leagueid, points: points}, function(json_result) {
 	  console.log(json_result);
 	  $('#' + teamid).html("POS: " + json_result.TEAMPOS);
@@ -104,7 +114,7 @@ function getTeamPos(teamid, leagueid, points){
 function getTrades(teamid, leagueid){
 	$.post('php/getTrades.php', {teamid: teamid}, function(json_result) {
 	  console.log(json_result);
-	  $('#trades').append("<div class = \"title\">&nbsp&nbsp&nbspNOTIFICATIONS</div>");
+	  //if($('#trades').html() == "") $('#trades').append("<div class = \"title\">&nbsp&nbsp&nbspNOTIFICATIONS</div>");
 	  var index = 0;
 	  json_result.STATUS.forEach(function(element){
 		 drawTrade(json_result.TRADEID[index], json_result.STATUS[index], json_result.TRADEDATE[index], json_result.PLAYER1NUMBER[index], json_result.PLAYER2NUMBER[index], json_result.P1NAME[index], json_result.P2NAME[index], json_result.T1NAME[index], json_result.T2NAME[index], json_result.T1ID[index], json_result.T2ID[index], teamid, json_result.P1TEAM[index], json_result.P2TEAM[index]); 
@@ -175,3 +185,5 @@ function getMaxTradeID(tradeid){
 	  console.log(json_result);
    }, 'json');
 }
+
+getTeams();
