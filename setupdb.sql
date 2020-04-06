@@ -301,7 +301,7 @@ insert into Team
 values('UBC Thunderbirds', 0, 100, 1);
 
 insert into Team
-values('Fred VanGOAT', 50, 200, 1);
+values('Fred VanGOAT', 0, 200, 1);
 
 insert into Team
 values('Kawhis Laugh', 40, 300, 1);
@@ -435,3 +435,6 @@ INSERT INTO PlayersInTeam VALUES(23, 'Lakers', 500);
 INSERT INTO PlayersInTeam VALUES(23, 'Lakers', 600);
 INSERT INTO PlayersInTeam VALUES(23, 'Lakers', 1000);
 INSERT INTO PlayersInTeam VALUES(23, 'Lakers', 800);
+INSERT INTO PlayersInTeam VALUES(9, 'Lakers', 400);
+INSERT INTO PlayersInTeam VALUES(77, 'Mavericks', 400);
+INSERT INTO PlayersInTeam VALUES(3, 'Thunder', 400);
