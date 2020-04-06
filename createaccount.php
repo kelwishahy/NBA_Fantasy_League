@@ -1,11 +1,7 @@
 <?php
-    //Logger for debugging
-    include "./chromelogger/ChromePhp.php";
-
     //Establish database connection
     $db_conn;
     $db_conn = oci_connect("ora_vicp24", "a43444447", "dbhost.students.cs.ubc.ca:1522/stu");
-    ChromePhp::log("dbconn = $db_conn");
 
     //BUTTON LOGIC---------------------------------------------------------------------------
     //Back to login page 
@@ -44,15 +40,10 @@
 
         //Add the new user to the database
         $currentDate = strval(date("Y-m-d"));
-        ChromePhp::log("$currentDate");
         $query_insertNewUser = "INSERT INTO RegularParticipant VALUES('".$username."','".$password."','".$currentDate."')";
-        ChromePhp::log("$query_insertNewUser");
         $statement_insertNewUser = oci_parse($db_conn, $query_insertNewUser);
-        ChromePhp::log("$statement_insertNewUser");
 
        $result = oci_execute($statement_insertNewUser);
-       ChromePhp::log("$result");
-       ChromePhp::log(oci_error($statement_insertNewUser));
 
         $query_checkUsername2 = "SELECT *
                                 FROM regularparticipant
