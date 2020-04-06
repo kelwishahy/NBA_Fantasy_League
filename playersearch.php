@@ -203,6 +203,42 @@
         header("location: viewallplayers.php");
         exit;
     }
+
+    //SELECTION QUERY
+    if (isset($_POST['findplayer'])) {
+        $selectionCriteria = "";
+
+        if (isset($_POST['number']) && !empty($_POST['number'])) {
+            $num = (int)$_POST['number'];
+            $selectionCriteria .= "PlayerNumber = ".$num." AND ";
+        }
+
+        if (isset($_POST['team']) && !empty($_POST['team'])) {
+            $team = $_POST['team'];
+            $selectionCriteria .= "NBATeam LIKE '%".$team."%' AND ";
+        }
+
+        if (isset($_POST['position']) && $_POST['position'] != 'pos') {
+            $pos = $_POST['position'];
+            $selectionCriteria .= "Position  = '".$pos."' AND ";
+        }
+
+        if (isset($_POST['points'])) {
+            $points = (int)$_POST['points'];
+            $selectionCriteria .= "Points >= ".$points." AND ";
+        }
+
+        if (isset($_POST['playername']) && !empty($_POST['playername'])) {
+            $name = $_POST['playername'];
+            $selectionCriteria .= "PlayerName LIKE '%".$name."%' AND ";
+        }
+
+        $selectionCriteria = substr($selectionCriteria, 0 , -4);
+        $selectionQuery = "SELECT * FROM NBAPlayer WHERE $selectionCriteria";
+        ChromePhp::log("Selection Query = $selectionQuery");
+        $statement_getPlayers = oci_parse($db_conn, $selectionQuery);
+        oci_execute($statement_getPlayers);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -254,6 +290,7 @@
         <input type="submit" name="highscore" value="Search" style="background-color:#fc9803; color:white; border:none;"></input>
     </form>
 
+<!-- SELECTION FORM -->
     <form action="" method="POST" style="color:white; width:100%; margin-top:20px;">
         <div><label for="findSpecificPlayer">Find a specific player:</label></div>
 
@@ -262,14 +299,15 @@
         <input type="text" id="team" name="team" placeholder="Team..."></input>
 
         <select name="position">
-            <option value="pointguard">Point Guard</option>
-            <option value="smallforward">Small Forward</option>
-            <option value="center">Center</option>
-            <option value="powerforward">Power Forward</option>
-            <option value="shootingguard">Shooting Guard</option>
+            <option value="pos">Position...</option>
+            <option value="Point Guard">Point Guard</option>
+            <option value="Small Forward">Small Forward</option>
+            <option value="Center">Center</option>
+            <option value="Power Forward">Power Forward</option>
+            <option value="Shooting Guard">Shooting Guard</option>
         </select>
 
-        <input type="number" id="points" name="points" placeholder="Points..."></input>
+        <input type="number" id="points" name="points" placeholder="Points >= ..."></input>
 
         <input type="text" id="playername" name="playername" placeholder="Name..."></input>
         
@@ -283,6 +321,7 @@
         <th align="left">Player</th>
         <th align="left">NBA Team</th>
         <th align="left">No.</th>
+        <th align="left">Position</th>
         <th align="left"><?php if(isset($_POST['nestavg'])){echo "Avg Points/Player";} else {echo "Points";} ?></th>
         <th align="left">Fantasy Team</th>
     </tr>
@@ -292,6 +331,7 @@
             <td><?php echo trim($row['PLAYERNAME']); ?></td>
             <td><?php echo trim($row['NBATEAM']);?></td>
             <td><?php echo $row['PLAYERNUMBER']; ?></td>
+            <td><?php echo $row['POSITION']; ?></td>
             <td><?php if(array_key_exists("POINTS", $row)){echo $row['POINTS'];} else if(array_key_exists("AVG(POINTS)", $row)){echo round($row['AVG(POINTS)'], 2);}?></td>
             <td><?php echo $row['TEAMNAME']; ?></td>
             </tr>

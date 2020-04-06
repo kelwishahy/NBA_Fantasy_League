@@ -1,7 +1,4 @@
 <?php
-    //Logger for debugging
-    include "./chromelogger/ChromePhp.php";
-
     //Identify the current team
     if (empty($_COOKIE['teamid'])) {
         header("location: ./profile/profile.html");
@@ -73,8 +70,6 @@
 
         //PROJECTION QUERY
         $query_getAllPlayers = "SELECT " .$projectionCriteria. " FROM NBAPlayer";
-        ChromePhp::log("Query = $query_getAllPlayers");
-
         $statement_getPlayers = oci_parse($db_conn, $query_getAllPlayers);
         oci_execute($statement_getPlayers);
     }
