@@ -9,11 +9,13 @@ if(empty($_POST['id']) || empty($_POST['username'])) {
 }
 						
 	$query_joinLeague = "INSERT INTO Team
-						values('".$_POST['username']."\'s team', 0 , (SELECT MAX(TeamID) FROM Team) + 100, '".$_POST['id']."')
+						values('".$_POST['username']."''s team', 0 , (SELECT MAX(TeamID) FROM Team) + 100, '".$_POST['id']."')
 						";
 						
     $statement_joinLeague = oci_parse($db_conn, $query_joinLeague);
     $r = oci_execute($statement_joinLeague);
+	
+	if(!$r) exit;
 	
 	$query_assignTeam = "INSERT INTO TeamOwnedBy
 						values((SELECT MAX(TeamID) FROM Team), '".$_POST['username']."')
