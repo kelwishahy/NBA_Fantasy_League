@@ -16,7 +16,6 @@ $('#profile').click(function(e){
 });
 
 getAllGames();
-getMyPlayers(getCookie("teamid"));
 
 //function to get a cookie stored in the browser
 //returns cookie as a string
@@ -44,6 +43,7 @@ function getAllGames(){
 		drawGame(json_result.FINALSCORE[index], json_result.DATEPLAYED[index], json_result.COMPETINGTEAMS[index]);
 		index++;
 	  })
+	  getMyPlayers(getCookie("teamid"));
    }, 'json');
 }
 
