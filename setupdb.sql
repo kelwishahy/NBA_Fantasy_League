@@ -416,3 +416,19 @@ values(27, 'Jazz', 1005);
 
 insert into LineupPlayers
 values(2, 'Clippers', 1009);
+
+INSERT INTO Team VALUES('GOATGANG', 0, 1000, 4);
+INSERT INTO TeamOwnedBy VALUES (1000, 'kelwishahy');
+INSERT INTO TeamAbbreviation VALUES('GOATGANG', 'GG');
+INSERT INTO NBAPlayer VALUES(23,'Lakers','Power Forward', 0, 'LeBron James');
+INSERT INTO PlayersInTeam VALUES(23, 'Raptors', 300);
+INSERT INTO PlayersInTeam VALUES(23, 'Raptors', 500);
+INSERT INTO PlayersInTeam VALUES(23, 'Raptors', 600);
+INSERT INTO PlayersInTeam VALUES(23, 'Raptors', 1000);
+INSERT INTO PlayersInTeam VALUES(23, 'Raptors', 800);
+INSERT INTO PlayersInTeam VALUES(77, 'Mavericks', 300);
+INSERT INTO PlayersInTeam VALUES(23, 'Lakers', 300);
+INSERT INTO PlayersInTeam VALUES(23, 'Lakers', 500);
+INSERT INTO PlayersInTeam VALUES(23, 'Lakers', 600);
+INSERT INTO PlayersInTeam VALUES(23, 'Lakers', 1000);
+INSERT INTO PlayersInTeam VALUES(23, 'Lakers', 800);
