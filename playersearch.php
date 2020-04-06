@@ -1,14 +1,10 @@
 <?php
-    //Logger for debugging
-    include "./chromelogger/ChromePhp.php";
-
     //Identify the current team
     if (empty($_COOKIE['teamid'])) {
         header("location: ./profile/profile.html");
         exit;
     }
     $teamid = $_COOKIE['teamid'];
-    ChromePhp::log("Team id is $teamid");
 
     //Identify the current league
     if (empty($_COOKIE['leagueid'])) {
@@ -16,12 +12,10 @@
         exit;
     }
     $leagueid = $_COOKIE['leagueid'];
-    ChromePhp::log("League id is $leagueid");
 
     //Establish database connection
     $db_conn;
     $db_conn = oci_connect("ora_vicp24", "a43444447", "dbhost.students.cs.ubc.ca:1522/stu");
-    ChromePhp::log("dbconn = $db_conn");
 
     //SQL QUERIES----------------------------------------------------------------------------------------------------
 
@@ -146,40 +140,29 @@
     //Search unavailable players in this league
     if (isset($_POST['search']) && $_POST['status'] === 'unavailable' && $_POST['leagueSetting'] === 'this') {
         $status = $_POST['status'];
-        ChromePhp::log("$status");
         $statement_getPlayers = oci_parse($db_conn, $query_getUnavailablePlayers);
-        ChromePhp::log("$statement_getPlayers");
-        ChromePhp::log(oci_execute($statement_getPlayers));
+        oci_execute($statement_getPlayers);
     }
 
     //Search Free Agents in this league
     if (isset($_POST['search']) && $_POST['status'] === 'freeagent' && $_POST['leagueSetting'] === 'this') {
         $status = $_POST['status'];
-        ChromePhp::log("$status");
         $statement_getPlayers = oci_parse($db_conn, $query_getFreeAgents);
-        ChromePhp::log("$statement_getPlayers");
-        ChromePhp::log(oci_execute($statement_getPlayers));
-        ChromePhp::log(oci_error($statement_getPlayers));
+        oci_execute($statement_getPlayers);
     }
 
     //Search unavailable players in all leagues
     if (isset($_POST['search']) && $_POST['status'] === 'unavailable' && $_POST['leagueSetting'] === 'all') {
         $status = $_POST['status'];
-        ChromePhp::log("$status");
         $statement_getPlayers = oci_parse($db_conn, $query_getUnavailablePlayers_allLeagues);
-        ChromePhp::log("$statement_getPlayers");
-        ChromePhp::log(oci_execute($statement_getPlayers));
-        ChromePhp::log(oci_error($statement_getPlayers));
+        oci_execute($statement_getPlayers);
     }
 
     //Search free agents in all leagues
     if (isset($_POST['search']) && $_POST['status'] === 'freeagent' && $_POST['leagueSetting'] === 'all') {
         $status = $_POST['status'];
-        ChromePhp::log("$status");
         $statement_getPlayers = oci_parse($db_conn, $query_getFreeAgents_allLeagues);
-        ChromePhp::log("$statement_getPlayers");
-        ChromePhp::log(oci_execute($statement_getPlayers));
-        ChromePhp::log(oci_error($statement_getPlayers));
+        oci_execute($statement_getPlayers);
     }
 
     //Get average points scored by players on all NBA teams
@@ -235,7 +218,6 @@
 
         $selectionCriteria = substr($selectionCriteria, 0 , -4);
         $selectionQuery = "SELECT * FROM NBAPlayer WHERE $selectionCriteria";
-        ChromePhp::log("Selection Query = $selectionQuery");
         $statement_getPlayers = oci_parse($db_conn, $selectionQuery);
         oci_execute($statement_getPlayers);
     }
